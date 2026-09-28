@@ -1,3 +1,5 @@
+import { clearSession } from './session.js';
+
 export async function api(path, options = {}) {
   const token = localStorage.getItem('token');
   const headers = { 'Content-Type': 'application/json' };
@@ -18,9 +20,9 @@ export async function api(path, options = {}) {
 
   if (!response.ok) {
     if (response.status === 401 && token) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+      clearSession();
+      sessionStorage.setItem('authNotice', 'Your session has expired. Please log in again.');
+      window.location.href = '/auth/login';
     }
     throw new Error((data && data.message) || 'Something went wrong.');
   }
