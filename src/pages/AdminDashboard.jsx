@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { api, nextSort, toQuery } from '../api.js';
 import DataTable from '../components/DataTable.jsx';
+import PasswordInput from '../components/PasswordInput.jsx';
 import { firstError, validateAddress, validateEmail, validateName, validatePassword } from '../utils/validation.js';
 
 const EMPTY_USER = { name: '', email: '', address: '', password: '', role: 'USER' };
 const EMPTY_STORE = { name: '', email: '', address: '', ownerId: '' };
 
-function AddUserForm({ onCreated }) {
+function AddUserForm({ onCreated, onClose }) {
   const [form, setForm] = useState(EMPTY_USER);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -38,7 +39,7 @@ function AddUserForm({ onCreated }) {
   };
 
   return (
-    <form className="card inner" onSubmit={handleSubmit}>
+    <form className="form-panel" onSubmit={handleSubmit}>
       <h3>Add New User</h3>
       {error && <p className="error">{error}</p>}
       {success && <p className="success">{success}</p>}
@@ -52,7 +53,7 @@ function AddUserForm({ onCreated }) {
         <textarea name="address" rows="2" value={form.address} onChange={handleChange} />
       </label>
       <label>Password
-        <input type="password" name="password" value={form.password} onChange={handleChange} />
+        <PasswordInput name="password" value={form.password} onChange={handleChange} />
       </label>
       <label>Role
         <select name="role" value={form.role} onChange={handleChange}>
@@ -61,12 +62,15 @@ function AddUserForm({ onCreated }) {
           <option value="OWNER">Store Owner</option>
         </select>
       </label>
-      <button type="submit">Create User</button>
+      <div className="form-actions">
+        <button type="submit">Create User</button>
+        <button type="button" className="secondary" onClick={onClose}>Cancel</button>
+      </div>
     </form>
   );
 }
 
-function AddStoreForm({ onCreated, refreshKey }) {
+function AddStoreForm({ onCreated, onClose, refreshKey }) {
   const [form, setForm] = useState(EMPTY_STORE);
   const [owners, setOwners] = useState([]);
   const [error, setError] = useState('');
@@ -102,7 +106,7 @@ function AddStoreForm({ onCreated, refreshKey }) {
   };
 
   return (
-    <form className="card inner" onSubmit={handleSubmit}>
+    <form className="form-panel" onSubmit={handleSubmit}>
       <h3>Add New Store</h3>
       {error && <p className="error">{error}</p>}
       {success && <p className="success">{success}</p>}
@@ -121,7 +125,10 @@ function AddStoreForm({ onCreated, refreshKey }) {
           {owners.map((o) => <option key={o.id} value={o.id}>{o.name} ({o.email})</option>)}
         </select>
       </label>
-      <button type="submit">Create Store</button>
+      <div className="form-actions">
+        <button type="submit">Create Store</button>
+        <button type="button" className="secondary" onClick={onClose}>Cancel</button>
+      </div>
     </form>
   );
 }
@@ -136,6 +143,8 @@ export default function AdminDashboard() {
   const [userSort, setUserSort] = useState({ by: 'name', order: 'asc' });
   const [storeSort, setStoreSort] = useState({ by: 'name', order: 'asc' });
   const [selected, setSelected] = useState(null);
+  const [showAddUser, setShowAddUser] = useState(false);
+  const [showAddStore, setShowAddStore] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [error, setError] = useState('');
 
@@ -205,12 +214,15 @@ export default function AdminDashboard() {
       <div className="tabs">
         <button type="button" className={tab === 'users' ? 'active' : ''} onClick={() => setTab('users')}>Users</button>
         <button type="button" className={tab === 'stores' ? 'active' : ''} onClick={() => setTab('stores')}>Stores</button>
-        <button type="button" className={tab === 'addUser' ? 'active' : ''} onClick={() => setTab('addUser')}>Add User</button>
-        <button type="button" className={tab === 'addStore' ? 'active' : ''} onClick={() => setTab('addStore')}>Add Store</button>
       </div>
 
       {tab === 'users' && (
         <div className="card">
+          <div className="card-header">
+            <h3>Users</h3>
+            {!showAddUser && <button type="button" onClick={() => setShowAddUser(true)}>+ Add User</button>}
+          </div>
+          {showAddUser && <AddUserForm onCreated={bump} onClose={() => setShowAddUser(false)} />}
           <div className="filters">
             <input placeholder="Filter by name" value={userFilters.name} onChange={(e) => setUserFilters({ ...userFilters, name: e.target.value })} />
             <input placeholder="Filter by email" value={userFilters.email} onChange={(e) => setUserFilters({ ...userFilters, email: e.target.value })} />
@@ -244,6 +256,11 @@ export default function AdminDashboard() {
 
       {tab === 'stores' && (
         <div className="card">
+          <div className="card-header">
+            <h3>Stores</h3>
+            {!showAddStore && <button type="button" onClick={() => setShowAddStore(true)}>+ Add Store</button>}
+          </div>
+          {showAddStore && <AddStoreForm onCreated={bump} onClose={() => setShowAddStore(false)} refreshKey={refresh} />}
           <div className="filters">
             <input placeholder="Filter by name" value={storeFilters.name} onChange={(e) => setStoreFilters({ ...storeFilters, name: e.target.value })} />
             <input placeholder="Filter by email" value={storeFilters.email} onChange={(e) => setStoreFilters({ ...storeFilters, email: e.target.value })} />
@@ -252,9 +269,6 @@ export default function AdminDashboard() {
           <DataTable columns={storeColumns} rows={stores} sort={storeSort} onSort={(key) => setStoreSort(nextSort(storeSort, key))} />
         </div>
       )}
-
-      {tab === 'addUser' && <AddUserForm onCreated={bump} />}
-      {tab === 'addStore' && <AddStoreForm onCreated={bump} refreshKey={refresh} />}
     </div>
   );
 }

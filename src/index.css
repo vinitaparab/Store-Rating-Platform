@@ -171,3 +171,183 @@ th.sortable:hover {
   background: #f9fafb;
   border-radius: 6px;
 }
+
+/* Navbar brand + user menu */
+.navbar .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+}
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fde047;
+  font-size: 18px;
+}
+.user-menu {
+  position: relative;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+}
+.avatar:hover,
+.avatar[aria-expanded='true'] {
+  border-color: #fff;
+}
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 220px;
+  background: #fff;
+  color: #111827;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  padding: 6px;
+  z-index: 20;
+}
+.dropdown-header {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 4px;
+}
+.dropdown-header strong,
+.dropdown-header span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dropdown-header span {
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 2px;
+}
+.dropdown button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: #111827;
+  border-radius: 6px;
+}
+.dropdown button:hover {
+  background: #f3f4f6;
+}
+.dropdown button.danger {
+  color: #b91c1c;
+}
+.dropdown button.danger:hover {
+  background: #fee2e2;
+}
+
+/* Login / signup */
+.auth-card {
+  max-width: 440px;
+  margin: 48px auto;
+  background: #fff;
+  border-radius: 14px;
+  padding: 32px 28px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.15), 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+.auth-card h2 {
+  margin: 0 0 6px;
+  text-align: center;
+}
+.auth-subtitle {
+  margin: 0 0 20px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+.auth-switch {
+  text-align: center;
+  margin: 18px 0 0;
+  font-size: 14px;
+}
+.auth-switch a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+button.block {
+  width: 100%;
+  padding: 10px 14px;
+  margin-top: 4px;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Password field with show/hide toggle */
+.password-field {
+  position: relative;
+  margin-top: 4px;
+}
+.password-field input {
+  margin-top: 0;
+  padding-right: 40px;
+}
+.eye-btn {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  display: flex;
+  padding: 4px;
+  background: transparent;
+  color: #6b7280;
+}
+.eye-btn:hover {
+  color: #111827;
+}
+
+/* Admin tab headers + inline add forms */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.card-header h3 {
+  margin: 0;
+}
+.form-panel {
+  max-width: 520px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+}
+.form-panel h3 {
+  margin-top: 0;
+}
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+button.secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
